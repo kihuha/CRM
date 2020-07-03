@@ -1,0 +1,5 @@
+export { default as AppointmentModel } from "./Appointment"
+export { default as CompanyModel } from "./Company"
+export { default as CustomerModel } from "./Customer"
+export { default as SalesRepresentativeModel } from "./SalesRepresentative"
+export { default as User } from "./User"

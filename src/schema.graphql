@@ -1,0 +1,120 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Company {
+  id: String!
+  name: String!
+  address: String!
+}
+
+enum CustomerStatus {
+  created
+  appointmentSet
+  appointmentCompleted
+  negotiating
+  closedWon
+  closedLost
+}
+
+type Customer {
+  id: String!
+  name: String!
+  address: String
+  phone: String!
+  phoneAlt: String
+  email: String!
+  emailAlt: String
+  createdAt: String
+  updatedAt: String
+  status: CustomerStatus
+  company: Company
+  assignedRepresentative: SalesRepresentative
+}
+
+type SalesRepresentative {
+  id: String!
+  name: String
+  personalPhone: String
+  workPhone: String!
+  personalEmail: String!
+  workEmail: String
+}
+
+type Appointment {
+  id: String!
+  datetime: String!
+  customer: Customer
+  salesRepresentative: SalesRepresentative
+}
+
+type Query {
+  companies: [Company]
+  company(id: String!): Company
+  customers: [Customer]
+  customer(id: String!): Customer
+  salesRepresentatives: [SalesRepresentative]
+  salesRepresentative(id: String!): SalesRepresentative
+  appointments: [Appointment]
+  appointment(id: String!): Appointment
+}
+
+type Mutation {
+  createCompany(name: String!, address: String!): Company
+  updateCompany(id: String!, name: String, address: String): Company
+  deleteCompany(id: String!): String
+
+  createCustomer(
+    name: String!
+    address: String
+    phone: String!
+    phoneAlt: String
+    email: String!
+    emailAlt: String
+    status: CustomerStatus
+    company: String!
+    assignedRepresentative: String!
+  ): Customer
+  updateCustomer(
+    name: String
+    address: String
+    phone: String
+    phoneAlt: String
+    email: String
+    emailAlt: String
+    status: CustomerStatus
+    company: String
+    assignedRepresentative: String
+  ): Customer
+  deleteCustomer(id: String!): String
+
+  createSalesRepresentative(
+    name: String
+    personalPhone: String
+    workPhone: String!
+    personalEmail: String!
+    workEmail: String
+  ): SalesRepresentative
+  updateSalesRepresentative(
+    name: String
+    personalPhone: String
+    workPhone: String
+    personalEmail: String
+    workEmail: String
+  ): SalesRepresentative
+  deleteSalesRepresentative(id: String!): String
+
+  createAppointment(
+    datetime: String!
+    customer: String!
+    salesRep: String!
+  ): Appointment
+  updateAppointment(
+    id: String!
+    datetime: String
+    customer: String!
+    salesRep: String
+  ): Appointment
+  cancelAppointment(id: String!): String
+}
