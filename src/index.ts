@@ -54,7 +54,7 @@ interface IAppointment {
   id?: string
   datetime: string
   customer: string
-  salesRep: string
+  salesRepresentative: string
 }
 
 const resolvers = {
@@ -108,6 +108,24 @@ const resolvers = {
     appointments: async () => {
       try {
         const data = await AppointmentModel.find({})
+          .populate({
+            path: "customer",
+            model: CustomerModel,
+            populate: [
+              {
+                path: "company",
+                model: CompanyModel,
+              },
+              {
+                path: "assignedRepresentative",
+                model: SalesRepresentativeModel,
+              },
+            ],
+          })
+          .populate({
+            path: "salesRepresentative",
+            model: SalesRepresentativeModel,
+          })
 
         return data
       } catch (e) {}
@@ -115,6 +133,24 @@ const resolvers = {
     appointment: async (_: any, args: { id: String }) => {
       try {
         const data = await AppointmentModel.findById({ _id: args.id })
+          .populate({
+            path: "customer",
+            model: CustomerModel,
+            populate: [
+              {
+                path: "company",
+                model: CompanyModel,
+              },
+              {
+                path: "assignedRepresentative",
+                model: SalesRepresentativeModel,
+              },
+            ],
+          })
+          .populate({
+            path: "salesRepresentative",
+            model: SalesRepresentativeModel,
+          })
 
         return data
       } catch (e) {}
@@ -233,7 +269,32 @@ const resolvers = {
 
     createAppointment: async (_: any, args: IAppointment) => {
       try {
-        const newAppointment = new AppointmentModel({ ...args })
+        const newAppointment = new AppointmentModel({
+          datetime: args.datetime,
+          customer: args.customer,
+          salesRepresentative: args.salesRepresentative,
+        })
+
+        await newAppointment
+          .populate({
+            path: "customer",
+            model: CustomerModel,
+            populate: [
+              {
+                path: "company",
+                model: CompanyModel,
+              },
+              {
+                path: "assignedRepresentative",
+                model: SalesRepresentativeModel,
+              },
+            ],
+          })
+          .populate({
+            path: "salesRepresentative",
+            model: SalesRepresentativeModel,
+          })
+          .execPopulate()
 
         await newAppointment.save()
 
@@ -247,10 +308,28 @@ const resolvers = {
           {
             datetime: args.datetime,
             customer: args.customer,
-            salesRep: args.salesRep,
+            salesRepresentative: args.salesRepresentative,
           },
           { new: true }
         )
+          .populate({
+            path: "customer",
+            model: CustomerModel,
+            populate: [
+              {
+                path: "company",
+                model: CompanyModel,
+              },
+              {
+                path: "assignedRepresentative",
+                model: SalesRepresentativeModel,
+              },
+            ],
+          })
+          .populate({
+            path: "salesRepresentative",
+            model: SalesRepresentativeModel,
+          })
 
         return updatedAppointment
       } catch (e) {}

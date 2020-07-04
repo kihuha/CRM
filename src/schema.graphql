@@ -108,13 +108,13 @@ type Mutation {
   createAppointment(
     datetime: String!
     customer: String!
-    salesRep: String!
+    salesRepresentative: String!
   ): Appointment
   updateAppointment(
     id: String!
     datetime: String
-    customer: String!
-    salesRep: String
+    customer: String
+    salesRepresentative: String
   ): Appointment
   cancelAppointment(id: String!): String
 }
