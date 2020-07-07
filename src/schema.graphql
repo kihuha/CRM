@@ -118,3 +118,7 @@ type Mutation {
   ): Appointment
   cancelAppointment(id: String!): String
 }
+
+type Subscription {
+  count: Int!
+}
